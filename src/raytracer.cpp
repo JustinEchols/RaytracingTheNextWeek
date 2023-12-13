@@ -10,7 +10,7 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-typedef u32 b32;
+typedef s32 b32;
 
 typedef float f32;
 typedef double f64;
@@ -215,7 +215,7 @@ world_quads()
 	material *Green = new lambertian(new texture_solid(v3f(0.2f, 1.0f, 0.2f)));
 	material *Blue = new lambertian (new texture_solid(v3f(0.2f, 0.2f, 1.0f)));
 	material *Orange = new lambertian(new texture_solid(v3f(1.0f, 0.5, 0.0f)));
-	material *Teal = new lambertian(new texture_solid(v3f(0.2f, 0.8, 0.8f)));
+	material *Teal = new lambertian(new texture_solid(v3f(0.2f, 0.8f, 0.8f)));
 
 	Result.add(new quad(v3f(-3.0f, -2.0f, 5.0f), v3f(0.0, 0.0f, -4.0f), v3f(0.0f, 4.0f, 0.0f), Red));
 	Result.add(new quad(v3f(-2.0f, -2.0f, 0.0f), v3f(4.0f, 0.0f, 0.0f), v3f(0.0f, 4.0f, 0.0f), Green));
@@ -445,7 +445,7 @@ int main(int argc, char **argv)
 			World = world_two_spheres_diffuse();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 90.0f;
 
@@ -459,6 +459,8 @@ int main(int argc, char **argv)
 			Camera.sample_count = 100;
 			Camera.scatter_count = 50;
 
+			Camera.Background = v3f(0.7f, 0.8f, 1.0f);
+
 			Camera.init();
 		} break;
 		case 2:
@@ -466,7 +468,7 @@ int main(int argc, char **argv)
 			World = world_defocus_blur();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 20.0f;
 
@@ -487,7 +489,7 @@ int main(int argc, char **argv)
 			World = world_checkered_ground();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 20.0f;
 
@@ -510,7 +512,7 @@ int main(int argc, char **argv)
 			World = world_earth();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 20.0f;
 
@@ -532,7 +534,7 @@ int main(int argc, char **argv)
 			World = world_checkered_spheres();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 20.0f;
 
@@ -554,7 +556,7 @@ int main(int argc, char **argv)
 			World = world_perlin_spheres();
 
 			Camera.image_width = 400;
-			Camera.aspect_ratio = 16.0 / 9.0;
+			Camera.aspect_ratio = 16.0f / 9.0f;
 
 			Camera.fov_vertical = 20.0f;
 
@@ -665,8 +667,8 @@ int main(int argc, char **argv)
 
 			Camera.aspect_ratio = 1.0;
 			Camera.image_width = 800;
-			Camera.sample_count = 2;
-			Camera.scatter_count = 40;
+			Camera.sample_count = 50;
+			Camera.scatter_count = 50;
 			Camera.Background = v3f(0.0f, 0.0f, 0.0f);
 
 			Camera.fov_vertical = 40;
@@ -683,7 +685,7 @@ int main(int argc, char **argv)
 		} break;
 	}
 
-	Camera.image_render(&World, filename);
+	Camera.image_render_threaded(&World, 0, filename);
 
 	return 0;
 }

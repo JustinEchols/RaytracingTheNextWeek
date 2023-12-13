@@ -55,13 +55,15 @@ metal::metal(const v3f &A, f32 f)
 b32
 metal::ray_scatter(const ray &RayIn, const intersect_record &IntersectRecord, v3f &Atten, ray &RayScattered) const
 {
+	b32 Result = false;
 	v3f R = reflect(RayIn.Direction, IntersectRecord.Normal);
 	R += fuzz * v3f_rand_unit_vector();
 	RayScattered = ray(IntersectRecord.Pos, R, RayIn.time);
 	Atten = Albedo;
 
-	return(dot(RayScattered.Direction, IntersectRecord.Normal) > 0.0f);
-	//return(true);
+	Result = (dot(RayScattered.Direction, IntersectRecord.Normal) > 0.0f);
+
+	return(Result);
 }
 
 class dielectric: public material

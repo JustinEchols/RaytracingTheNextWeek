@@ -85,7 +85,7 @@ b32
 aabb::ray_intersect(const ray &Ray, interval RayInterval) const
 {
 	b32 Result = true;
-	for(u32 comp_idx = 0; comp_idx < 3; comp_idx++)
+	for(s32 comp_idx = 0; comp_idx < 3; comp_idx++)
 	{
 		f32 t0 = MIN((axis(comp_idx).min - Ray.Origin[comp_idx] / Ray.Direction[comp_idx]),
 				     (axis(comp_idx).max - Ray.Origin[comp_idx] / Ray.Direction[comp_idx]));
@@ -274,7 +274,7 @@ rotate_y::rotate_y(object *Obj, f32 angle)
 				Test[0] = dot(RowX, Test);
 				Test[2] = dot(RowZ, Test);
 
-				for(u32 c = 0; c < 3; c++)
+				for(s32 c = 0; c < 3; c++)
 				{
 					Min[c] = MIN(Min[c], Test[c]);
 					Max[c] = MAX(Max[c], Test[c]);

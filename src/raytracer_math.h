@@ -53,7 +53,7 @@ class v3f
 inline void
 v3f::normalize()
 {
-	f32 k = (1.0 / sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]));
+	f32 k = (1.0f / sqrt(e[0]*e[0] + e[1]*e[1] + e[2]*e[2]));
 	e[0] *= k;
 	e[1] *= k;
 	e[2] *= k;
@@ -294,7 +294,7 @@ v3f_near_zero(v3f V)
 {
 	b32 Result = false;
 
-	f32 epsilon = 1e-8;
+	f32 epsilon = (f32)1e-8;
 	if((ABS(V[0]) < epsilon) &&
 	   (ABS(V[1]) < epsilon) &&
 	   (ABS(V[2]) < epsilon))
@@ -321,7 +321,7 @@ s32_rand_interval(s32 min, s32 max)
 {
 	s32 Result = 0;
 
-	Result = s32(random_interval(min, max + 1));
+	Result = (s32)random_interval((f32)min, (f32)(max + 1));
 
 	return(Result);
 }
@@ -524,11 +524,11 @@ s32 *
 perlin::permutation_generate()
 {
 	// TODO(Justin): Change the name of the count variable.
-	s32 *Result = new s32[v3f_count];
+	s32 *Result = new s32[(size_t)v3f_count];
 
 	for(u32 i = 0; i < v3f_count; i++)
 	{
-		Result[i] = i;
+		Result[i] = (s32)i;
 	}
 
 	permute(Result, v3f_count);
@@ -541,7 +541,7 @@ perlin::permute(s32 *indices, u32 permute_count)
 {
 	for(u32 index = permute_count - 1; index > 0; index--)
 	{
-		s32 target = s32_rand_interval(0, index);
+		s32 target = s32_rand_interval(0, (s32)index);
 		s32 tmp = indices[index];
 		indices[index] = indices[target];
 		indices[target] = tmp;
@@ -624,7 +624,7 @@ perlin::turbulence(const v3f &V, s32 depth) const
 	v3f Tmp = V;
 	f32 weight = 1.0f;
 
-	for(u32 index = 0; index < depth; index++)
+	for(s32 index = 0; index < depth; index++)
 	{
 		Result += weight * noise(Tmp);
 		weight *= 0.5f;
@@ -637,6 +637,13 @@ perlin::turbulence(const v3f &V, s32 depth) const
 }
 
 
+inline u32 
+f32_round_to_u32(f32 x)
+{
+	u32 Result = (u32)(x + 0.5f);
+
+	return(Result);
+}
 
 
 #define RAYTRACER_MATH_H 
